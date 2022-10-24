@@ -1,0 +1,303 @@
+definitions:
+  config.Config:
+    properties:
+      defaultLimit:
+        type: string
+      defaultOffset:
+        type: string
+      environment:
+        description: debug, test, release
+        type: string
+      httpport:
+        type: string
+      httpscheme:
+        type: string
+      passcodeLength:
+        type: integer
+      passcodePool:
+        type: string
+      postgresDatabase:
+        type: string
+      postgresHost:
+        type: string
+      postgresMaxConnections:
+        type: integer
+      postgresPassword:
+        type: string
+      postgresPort:
+        type: integer
+      postgresUser:
+        type: string
+      secretKey:
+        type: string
+      serviceName:
+        type: string
+      version:
+        type: string
+    type: object
+  http.Response:
+    properties:
+      data:
+        type: object
+      description:
+        type: string
+      status:
+        type: string
+    type: object
+  restservice.Phone:
+    properties:
+      id:
+        type: string
+      number:
+        type: string
+    type: object
+  restservice.PhoneList:
+    properties:
+      count:
+        type: integer
+      phones:
+        items:
+          $ref: '#/definitions/restservice.Phone'
+        type: array
+    type: object
+  restservice.PhoneNumber:
+    properties:
+      number:
+        type: string
+    type: object
+info:
+  contact: {}
+  description: Hamkorlab Task API
+  license: {}
+  termsOfService: https://udevs.io
+paths:
+  /config:
+    get:
+      consumes:
+      - application/json
+      description: show service config data when the service environment set to debug
+        mode
+      operationId: get_config
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: Response data
+          schema:
+            allOf:
+            - $ref: '#/definitions/http.Response'
+            - properties:
+                data:
+                  $ref: '#/definitions/config.Config'
+              type: object
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/http.Response'
+      summary: get config data on the debug mode
+  /phone:
+    get:
+      consumes:
+      - application/json
+      description: Get Phone List
+      operationId: get_phone_list
+      parameters:
+      - description: offset
+        in: query
+        name: offset
+        type: integer
+      - description: limit
+        in: query
+        name: limit
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: PhoneList
+          schema:
+            allOf:
+            - $ref: '#/definitions/http.Response'
+            - properties:
+                data:
+                  $ref: '#/definitions/restservice.PhoneList'
+              type: object
+        "500":
+          description: Server Error
+          schema:
+            allOf:
+            - $ref: '#/definitions/http.Response'
+            - properties:
+                data:
+                  type: string
+              type: object
+      summary: Get Phone List
+      tags:
+      - phone
+    post:
+      consumes:
+      - application/json
+      description: Create Phone
+      operationId: create_phone
+      parameters:
+      - description: PhoneNumber
+        in: body
+        name: phone
+        required: true
+        schema:
+          $ref: '#/definitions/restservice.PhoneNumber'
+      produces:
+      - application/json
+      responses:
+        "201":
+          description: Phone data
+          schema:
+            allOf:
+            - $ref: '#/definitions/http.Response'
+            - properties:
+                data:
+                  type: string
+              type: object
+        "500":
+          description: Server Error
+          schema:
+            allOf:
+            - $ref: '#/definitions/http.Response'
+            - properties:
+                data:
+                  type: string
+              type: object
+      summary: Create Phone
+      tags:
+      - phone
+    put:
+      consumes:
+      - application/json
+      description: Update Phone
+      operationId: update_phone
+      parameters:
+      - description: Phone
+        in: body
+        name: phone
+        required: true
+        schema:
+          $ref: '#/definitions/restservice.Phone'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: Phone data
+          schema:
+            allOf:
+            - $ref: '#/definitions/http.Response'
+            - properties:
+                data:
+                  type: string
+              type: object
+        "500":
+          description: Server Error
+          schema:
+            allOf:
+            - $ref: '#/definitions/http.Response'
+            - properties:
+                data:
+                  type: string
+              type: object
+      summary: Update Phone
+      tags:
+      - phone
+  /phone/{phone_id}:
+    delete:
+      consumes:
+      - application/json
+      description: Get Phone
+      operationId: delete_phone
+      parameters:
+      - description: phone_id
+        in: path
+        name: phone_id
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: Phone data
+          schema:
+            allOf:
+            - $ref: '#/definitions/http.Response'
+            - properties:
+                data:
+                  type: string
+              type: object
+        "500":
+          description: Server Error
+          schema:
+            allOf:
+            - $ref: '#/definitions/http.Response'
+            - properties:
+                data:
+                  type: string
+              type: object
+      summary: Delete Phone
+      tags:
+      - phone
+    get:
+      consumes:
+      - application/json
+      description: Get Phone By ID
+      operationId: get_phone_by_id
+      parameters:
+      - description: phone_id
+        in: path
+        name: phone_id
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: PhoneBody
+          schema:
+            allOf:
+            - $ref: '#/definitions/http.Response'
+            - properties:
+                data:
+                  $ref: '#/definitions/restservice.Phone'
+              type: object
+        "500":
+          description: Server Error
+          schema:
+            allOf:
+            - $ref: '#/definitions/http.Response'
+            - properties:
+                data:
+                  type: string
+              type: object
+      summary: Get Phone By ID
+      tags:
+      - phone
+  /ping:
+    get:
+      consumes:
+      - application/json
+      description: this returns "pong" messsage to show service is working
+      operationId: ping
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: Response data
+          schema:
+            allOf:
+            - $ref: '#/definitions/http.Response'
+            - properties:
+                data:
+                  type: string
+              type: object
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/http.Response'
+      summary: returns "pong" message
+swagger: "2.0"
