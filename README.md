@@ -20,6 +20,7 @@ Use the following command to run the application:
 
 The following environment variables are used by the application, you can use .env.example as a template:
 
+    HTTP_PORT=80
     POSTGRES_HOST: The host of the database
     POSTGRES_PORT: The port of the database
     POSTGRES_DATABASE: The name of the database
