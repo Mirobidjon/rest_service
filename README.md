@@ -4,7 +4,7 @@
 
 Rest Service stores phone numbers (ID/PHONE) in its postgreSQL database and provides a REST API to access them.
 
-Basic Rest Service (You can use the existing one or create your own). Five endpoints for the following operations:
+### Basic Rest Service (You can use the existing one or create your own). Five endpoints for the following operations:
     1. Create a new phone number    (/phone POST)
     2. Get a phone number by ID     (/phone/{id} GET)
     3. Update a phone number by ID  (/phone/{id} PUT)
